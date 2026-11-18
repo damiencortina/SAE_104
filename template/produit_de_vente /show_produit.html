@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Produit</title>
+</head>
+<body>
+<h1>listes des Produit proposée </h1>
+
+<a href="/produit/add" >ajouter un produit</a>
+
+{% if produit | length >= 1 %}
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>id</th>
+            <th>nom</th>
+            <th>saison_de pousse</th>
+            <th>type_de_produit</th>
+        </tr>
+        </thead>
+        {% for produit in ptoduit %}
+            <tr>
+                <td>{{ produit.id }}</td><td>{{ produit.nom }}</td><td>{{ produit.groupe }}</td>
+                <td>
+                    <a href="/produit/edit?id={{ produit.id }}"   class="btn btn-success">editer</a>&nbsp;
+                    <a href="/produit/delete?id={{ produit.id }}"   class="btn btn-success">supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <h2> la liste des produit est vide</h2>
+{% endif %}
+</body>
+</html>
