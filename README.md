@@ -11,7 +11,7 @@ chmod ug+x start.sh
 ./start.sh
 ```
 
-Si docker se plaint que le port 3306 est déjà utilisé, changer le port utilisé dans la commande `docker run` de `start.sh` comme suit :
+Si docker se plaint que le port 3306 est déjà utilisé, changer le port utilisé dans la commande `docker run` de `start.sh` comme suit (il faudra alors également spécifier le nouveau port dans votre `app.py`):
 
 ```
 -p 3306:3306 ---> -p <nouveau_port>:3306
