@@ -1,4 +1,4 @@
-USE BDD_adessaux;
+USE miambio;
 
 DROP TABLE IF EXISTS annonce;
 DROP TABLE IF EXISTS pousse_en;

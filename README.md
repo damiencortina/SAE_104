@@ -2,7 +2,22 @@
 
 ## Connect to DB
 
-Coming soon...
+### 1. [Install Docker](https://docs.docker.com/engine/install/)
+
+### 2. Run start.sh
+
+```shell
+chmod ug+x start.sh
+./start.sh
+```
+
+Si docker se plaint que le port 3306 est déjà utilisé, changer le port utilisé dans la commande `docker run` de `start.sh` comme suit :
+
+```
+-p 3306:3306 ---> -p <nouveau_port>:3306
+```
+
+**ATTENTION :** si votre python tourne sous docker, dans `app.py`, lors de la connexion a mariadb, utiliser `host="miambiodb"` et non `host="127.0.0.1"`
 
 ## How to contribute
 
@@ -12,6 +27,6 @@ Coming soon...
 
 Each section is separated by a comment indicating the entity name
 
-### 3. Add your templates in the corresponding folder in `template/`
+### 3. Add your templates in the corresponding folder in `templates`
 
 One for each entity (same as in `app.py`)
