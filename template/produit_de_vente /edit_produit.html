@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulaire Produit</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+{{ produit }}
+<div class="container py-4">
+  <h2 class="mb-4">Formulaire produit</h2>
+
+  <form action="/produit/edit" method="post">
+    <!-- Champ caché ID -->
+    <input type="hidden" name="id" value="{{ produit.id }}">
+
+    <!-- Nom -->
+    <div class="mb-3">
+      <label for="nom" class="form-label">Nom</label>
+      <input type="text" class="form-control" id="nom" name="nom" value="{{ produit.nom }}">
+    </div>
+
+    <!-- saison de pousse  -->
+
+          <div class="mb-3">
+            <label for="saison" class="form-label">saison de pousse </label>
+            <input type="text" class="form-control" id="saison" name="saison" value="{{ produit.saison }}">
+          </div>
+
+    <!-- type_de_produit -->
+
+          <div class="mb-3">
+            <label for="saison" class="form-label">type de produit </label>
+            <input type="text" class="form-control" id="type_de_produit" name="type_de_produit" value="{{ produit.type_de_produit }}">
+          </div>
+
+    <!-- Boutons -->
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

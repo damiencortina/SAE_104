@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulaire produit</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container py-4">
+  <h2 class="mb-4">Formulaire produit</h2>
+
+  <form action="/produit/add" method="post">
+
+    <!-- Nom -->
+    <div class="mb-3">
+      <label for="nom" class="form-label">Nom</label>
+      <input type="text" class="form-control" id="nom" name="nom" value="">
+    </div>
+
+    <!-- saison de pousse  -->
+    <div class="mb-3">
+      <label for="groupe" class="form-label">Groupe</label>
+      <select class="form-select" id="groupe" name="groupe">
+        <option value="été" selected>été</option>
+        <option value="autone">autone</option>
+        <option value="hiver">hiver</option>
+        <option value="autone">autone</option>
+    </div>
+
+    <!-- Boutons -->
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
