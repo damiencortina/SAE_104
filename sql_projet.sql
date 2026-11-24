@@ -1,3 +1,5 @@
+USE miambio;
+
 DROP TABLE IF EXISTS annonce;
 DROP TABLE IF EXISTS pousse_en;
 DROP TABLE IF EXISTS recolte;
