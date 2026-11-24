@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% block title %}
+    <title>MiamBio</title>
+    {% endblock %}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+{% include('_nav.html') %}
+<header class="container">
+    {% block body %}
+        <h2>MiamBio</h2>
+    {% endblock %}
+</header>
+<main>
+    <section>
+        <h2>
+            Bienvenue sur le site de Miambio !
+        </h2>
+    </section>
+</main>
+<script type="module" src="{{ url_for('static', filename='bootstrap/bootstrap.js') }}"></script>
+</body>
+</html>
