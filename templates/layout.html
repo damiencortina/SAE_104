@@ -7,24 +7,23 @@
     <title>MiamBio</title>
     {% endblock %}
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    {% block stylesheets %}
-    <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
-    >
-    {% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-<section class="hero is-link mb-5">
-  <div class="hero-body">
-    <p class="title">SAE1.04</p>
-    <p class="subtitle">MiamBio</p>
-  </div>
-</section>
-<div class="container">
+{% include('_nav.html') %}
+<header class="container">
     {% block body %}
-        <h2 style="color:blue">layout.html</h2>
+        <h2>MiamBio</h2>
     {% endblock %}
-</div>
+</header>
+<main>
+    <section>
+        <h2>
+            Bienvenue sur le site de Miambio !
+        </h2>
+    </section>
+</main>
+<script type="module" src="{{ url_for('static', filename='bootstrap/bootstrap.js') }}"></script>
 </body>
 </html>

@@ -13,8 +13,8 @@ import pymysql.cursors
 def get_db():
     if 'db' not in g:
         g.db = pymysql.connect(
-            host="127.0.0.1", # Utilisé si python tourne en local
-            #host="miambiodb", # Utilisé quand python tourne dans un container docker
+            #host="127.0.0.1", # Utilisé si python tourne en local
+            host="miambiodb", # Utilisé quand python tourne dans un container docker
             port=3306,
             user="miambio",
             password="getmemycarrots",
