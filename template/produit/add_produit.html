@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ajouter un produit</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+</head>
+<body class="bg-light">
+
+<div class="container py-4">
+    <h2 class="mb-4">Ajouter un produit</h2>
+
+    <form action="/produit/add" method="post">
+
+        <!-- Nom -->
+        <div class="mb-3">
+            <label for="nom" class="form-label">Nom du produit</label>
+            <input type="text" class="form-control" id="nom" name="nom" placeholder="Ex: Tomate cerise" required>
+        </div>
+
+        <!-- Type de produit (clé étrangère depuis type_produit) -->
+        <div class="mb-3">
+            <label for="type_id" class="form-label">Type de produit</label>
+            <select class="form-select" id="type_id" name="type_id" required>
+                <option value="">-- Sélectionner un type --</option>
+                {% for t in types_produit %}
+                    <option value="{{ t.id }}">{{ t.libelle }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Saison de pousse -->
+        <div class="mb-3">
+            <label for="saison" class="form-label">Saison de pousse</label>
+            <select class="form-select" id="saison" name="saison" >
+                <option value="">-- Choisir une saison --</option>
+                <option value="printemps">Printemps</option>
+                <option value="été" >Été</option>
+                <option value="automne">Automne</option>
+                <option value="hiver">Hiver</option>
+            </select>
+        </div>
+
+        <!-- Prix conseillé -->
+        <div class="mb-3">
+            <label for="prix" class="form-label">Prix conseillé (€)</label>
+            <input type="number" class="form-control" id="prix" name="prix" >
+        </div>
+
+        <!-- Boutons -->
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <a href="/produit/show" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+
+</body>
+</html>

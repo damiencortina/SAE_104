@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modifier un produit</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+</head>
+<body class="bg-light">
+<div class="container py-4">
+    <h2 class="mb-4">Modifier un produit</h2>
+
+    <form action="/produit/edit" method="post">
+        <!-- Champ caché ID -->
+        <input type="hidden" name="id" value="{{ produit.id }}">
+
+        <!-- Nom -->
+        <div class="mb-3">
+            <label for="nom" class="form-label">Nom du produit</label>
+            <input type="text" class="form-control" id="nom" name="nom" value="{{ produit.nom }}" required>
+        </div>
+
+        <!-- Type de produit (liste déroulante depuis la table type_produit) -->
+        <div class="mb-3">
+            <label for="type_id" class="form-label">Type de produit</label>
+            <select class="form-select" id="type_id" name="type_id" required>
+                {% for t in types_produit %}
+                    <option value="{{ t.id }}" {% if t.id == produit.type_id %}selected{% endif %}>
+                        {{ t.libelle }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Saison de pousse -->
+        <div class="mb-3">
+            <label for="saison" class="form-label">Saison de pousse</label>
+            <input type="text" class="form-control" id="saison" name="saison" maxlength="20" value="{{ produit.saison }}" >
+        </div>
+
+        <!-- Prix conseillé -->
+        <div class="mb-3">
+            <label for="prix" class="form-label">Prix conseillé (€)</label>
+            <input type="number" class="form-control" id="prix" name="prix" value="{{ produit.prix }}" >
+        </div>
+
+        <!-- Boutons -->
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <a href="/produit/show" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+</body>
+</html>

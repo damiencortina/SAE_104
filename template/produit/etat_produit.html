@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>État des produits</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+</head>
+<body class="bg-light">
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>État statistique des produits</h1>
+        <div>
+            <a href="/produit/show" class="btn btn-secondary">Liste des produits</a>
+            <a href="/" class="btn btn-outline-dark">Accueil</a>
+        </div>
+    </div>
+
+    <!-- Formulaire unique de paramétrage (en GET pour conserver les deux filtres ensemble) -->
+    <form action="/produit/etat" method="get" class="card p-3 mb-4">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-5">
+                <label for="saison" class="form-label">Filtrer par saison</label>
+                <select class="form-select" id="saison" name="saison">
+                    <option value="">-- Toutes les saisons --</option>
+                    <option value="printemps" {% if saison_choisie == 'printemps' %}selected{% endif %}>Printemps</option>
+                    <option value="été" {% if saison_choisie == 'été' %}selected{% endif %}>Été</option>
+                    <option value="automne" {% if saison_choisie == 'automne' %}selected{% endif %}>Automne</option>
+                    <option value="hiver" {% if saison_choisie == 'hiver' %}selected{% endif %}>Hiver</option>
+                </select>
+            </div>
+
+            <div class="col-md-5">
+                <label for="type_id" class="form-label">Filtrer par type de produit</label>
+                <select class="form-select" id="type_id" name="type_id">
+                    <option value="">-- Tous les types de produit --</option>
+                    {% for t in types_produit %}
+                        <option value="{{ t.id }}" {% if type_id_choisi == t.id|string %}selected{% endif %}>
+                            {{ t.libelle }} ({{ t.id }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Filtrer</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Tableau 1 : Nombre de produits par saison -->
+    <h3 class="mt-4">1. Nombre de produits par saison</h3>
+    {% if stats_saisons | length >= 1 %}
+        <table class="table table-bordered table-striped bg-white">
+            <thead class="table-dark">
+                <tr>
+                    <th>Saison de pousse</th>
+                    <th>Nombre de produits</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in stats_saisons %}
+                <tr>
+                    <td>{{ s.saison }}</td>
+                    <td><strong>{{ s.nb_produits }}</strong></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info">Aucun produit trouvé pour cette saison.</div>
+    {% endif %}
+
+    <!-- Tableau 2 : Prix moyen par type de produit -->
+    <h3 class="mt-5">2. Prix moyen conseillé par type de produit</h3>
+    {% if stats_prix | length >= 1 %}
+        <table class="table table-bordered table-striped bg-white">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID Type</th>
+                    <th>Type de produit</th>
+                    <th>Nombre de produits</th>
+                    <th>Prix moyen conseillé</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in stats_prix %}
+                <tr>
+                    <td>{{ p.id }}</td>
+                    <td>{{ p.libelle }}</td>
+                    <td>{{ p.nb_produits }}</td>
+                    <td>
+                        {% if p.prix_moyen is not none %}
+                            <strong>{{ p.prix_moyen }} €</strong>
+                        {% else %}
+                            <em>Aucun produit</em>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info">Aucune donnée pour ce type de produit.</div>
+    {% endif %}
+
+</div>
+</body>
+</html>

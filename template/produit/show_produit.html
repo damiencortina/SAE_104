@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Produit</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+</head>
+<body>
+<div class="container mt-3">
+    <h1>Liste des produits proposés</h1>
+
+    <a href="/produit/add" class="btn btn-primary mb-3">Ajouter un produit</a>
+
+    {% if produits | length >= 1 %}
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Type de produit (ID)</th>
+                    <th>Saison de pousse</th>
+                    <th>Prix conseillé</th>
+                    <th>Opérations</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in produits %}
+                <tr>
+                    <td>{{ p.id }}</td>
+                    <td>{{ p.nom }}</td>
+                    <td>{{ p.libelle_type }} ({{ p.type_id }})</td>
+                    <td>{{ p.saison }}</td>
+                    <td>{{ p.prix }} €</td>
+                    <td>
+                        <a href="/produit/edit?id={{ p.id }}" class="btn btn-warning btn-sm">Éditer</a>
+                        &nbsp;
+                        <a href="/produit/delete?id={{ p.id }}" class="btn btn-danger btn-sm">Supprimer</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h2>La liste des produits est vide</h2>
+    {% endif %}
+</div>
+</body>
+</html>
