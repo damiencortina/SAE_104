@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+<div class="px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold">Annonces</h1>
+</div>
+{% endblock header %}
+
+{% block body %}
+<a class="btn btn-primary px-4 mb-4" href="/ski/add" role="button">Créer une nouvelle annonce</a>
+<table class="table table-sm align-middle">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Produit</th>
+            <th class="text-center" scope="col">Maraîcher</th>
+            <th class="text-center" scope="col">Date de vente</th>
+            <th class="text-center" scope="col">Quantitée vendue</th>
+            <th class="text-center" scope="col">Prix</th>
+            <th class="text-end" scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for annonce in annonces %}
+        <tr>
+            <th scope="row">{{annonce.id}}</th>
+            <td>{{annonce.nom_produit}}</td>
+            <td class="text-center">{{annonce.maraicher_id}}</td>
+            <td class="text-center">{{annonce.vente_id}}</td>
+            <td class="text-center">{%if annonce.quantite_vendue is not none%}{{annonce.quantite_vendue}}{% else %}-{% endif %}</td>
+            <td class="text-center">{{annonce.prix_produit}}€</td>
+            <td class="text-end">
+                <a class="btn btn-outline-primary" href="/annonce/edit?id={{annonce.id}}" role="button">Modifier</a>
+                <a class="btn btn-outline-danger" href="/annonce/delete?id={{annonce.id}}" role="button">Supprimer</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock body %}
