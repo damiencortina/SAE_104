@@ -58,59 +58,119 @@ def show_annonce():
     cursor.close()
     return render_template('annonce/show_annonce.html', annonces=annonces)
 
-
-@app.route('/toto')
-def homepage():
+@app.route('/annonce/edit', methods=['GET'])
+def edit_annonce():
+    idMaraicher = request.args.get('maraicher')
+    idVente = request.args.get('vente')
+    idProduit = request.args.get('produit')
+    idUnite = request.args.get('unite')
     cursor = get_db().cursor()
-    cursor.execute('''
-                   SELECT id_maraicher id, prenom, nom
-                   FROM annonce;
-                   ''')
-    annonces = cursor.fetchall()
-    cursor.execute('''
-                   SELECT id_maraicher id, prenom, nom
-                   FROM maraicher;
-                   ''')
+    if idMaraicher != None and idMaraicher.isnumeric() and idVente != None and idMaraicher.isnumeric() and idProduit != None and idProduit.isnumeric() and idUnite != None and idUnite.isnumeric():
+        cursor.execute(''' 
+                SELECT *
+                FROM annonce
+                WHERE maraicher_id = %s AND vente_id = %s AND produit_id = %s AND unite_id = %s;
+            ''', (idMaraicher, idVente, idProduit, idUnite))
+    annonce = cursor.fetchone()
+    cursor.execute(''' 
+            SELECT id_maraicher, raison_sociale
+            FROM maraicher
+            ORDER BY raison_sociale;
+        ''')
     maraichers = cursor.fetchall()
     cursor.execute('''
-                   SELECT id_maraicher id, prenom, nom
-                   FROM maraicher;
+                   SELECT id_produit, nom_produit
+                   FROM produit
+                   ORDER BY nom_produit;
                    ''')
     produits = cursor.fetchall()
     cursor.execute('''
-                   SELECT id_maraicher id, prenom, nom
-                   FROM maraicher;
+                   SELECT id_vente, pdv.nom_point_de_vente, vente.date_vente
+                   FROM vente
+                    JOIN point_de_vente pdv ON pdv.id_point_de_vente = vente.point_de_vente_id;
                    ''')
-    vente = cursor.fetchall()
+    ventes = cursor.fetchall()
     cursor.execute('''
-                   SELECT id_maraicher id, prenom, nom
-                   FROM maraicher;
+                   SELECT id_unite, nom_unite
+                   FROM unite
+                   ORDER BY nom_unite;
                    ''')
-    unite = cursor.fetchall()
-    cursor.close()
-    return render_template('layout.html', annonces=annonces, maraichers=maraichers, produits=produits, vente=vente, unite=unite)
+    unites = cursor.fetchall()
+    return render_template('annonce/edit_annonce.html', annonce=annonce, maraichers=maraichers, produits=produits, ventes=ventes, unites=unites)
 
-@app.route('/annonce/edit', methods=['GET'])
-def edit_etudiant():
-    id = request.args.get('id')
+@app.route('/annonce/edit', methods=['POST'])
+def valid_edit_annonce():
+    maraicher_id = request.form.get('maraicher_id')
+    produit_id = request.form.get('produit_id'),
+    vente_id = request.form.get('vente_id'),
+    unite_id = request.form.get('unite_id')
+    prix_produit = request.form.get('prix_produit')
+    quantite_vendue = request.form.get('quantite_vendue')
     cursor = get_db().cursor()
-    if id != None and id.isnumeric():
-        indice = int(id)
-        cursor.execute(''' 
-                SELECT etudiant.id_etudiant AS id
-                     , etudiant.nom_etudiant AS nom
-                     , etudiant.groupe_etudiant_id AS groupe_id
-                FROM etudiant
-                WHERE id_etudiant = %s;
-            ''', indice)
-    mycursor2 = get_db().cursor()
-    groupe_sql = ''' 
-            SELECT id_groupe AS id, libelle_groupe AS name
-            FROM groupe
-            ORDER BY libelle_groupe;
-        '''
-    mycursor2.execute(groupe_sql)
-    return render_template('etudiant/edit_etudiant.html', etudiant=mycursor.fetchone(), groupes=mycursor2.fetchall())
+    cursor.execute('''UPDATE annonce SET prix_produit = %s, quantite_vendue = %s WHERE maraicher_id=%s AND produit_id = %s AND vente_id = %s AND unite_id = %s ''',(prix_produit, quantite_vendue, maraicher_id, produit_id, vente_id, unite_id))
+    get_db().commit()
+    return redirect('/annonces/show')
+
+@app.route('/annonce/add', methods=['GET'])
+def add_annonce():
+    cursor = get_db().cursor()
+    cursor.execute(''' 
+            SELECT id_maraicher, raison_sociale
+            FROM maraicher
+            ORDER BY raison_sociale;
+        ''')
+    maraichers = cursor.fetchall()
+    cursor.execute('''
+                   SELECT id_produit, nom_produit
+                   FROM produit
+                   ORDER BY nom_produit;
+                   ''')
+    produits = cursor.fetchall()
+    cursor.execute('''
+                   SELECT id_vente, pdv.nom_point_de_vente, vente.date_vente
+                   FROM vente
+                    JOIN point_de_vente pdv ON pdv.id_point_de_vente = vente.point_de_vente_id;
+                   ''')
+    ventes = cursor.fetchall()
+    cursor.execute('''
+                   SELECT id_unite, nom_unite
+                   FROM unite
+                   ORDER BY nom_unite;
+                   ''')
+    unites = cursor.fetchall()
+    return render_template('annonce/add_annonce.html', maraichers=maraichers, produits=produits, ventes=ventes, unites=unites)
+
+@app.route('/annonce/add', methods=['POST'])
+def valid_add_annonce():
+    maraicher_id = request.form.get('maraicher_id')
+    produit_id = request.form.get('produit_id'),
+    vente_id = request.form.get('vente_id'),
+    unite_id = request.form.get('unite_id')
+    prix_produit = request.form.get('prix_produit')
+    quantite_vendue = request.form.get('quantite_vendue')
+    cursor = get_db().cursor()
+    cursor.execute('''INSERT INTO annonce(maraicher_id, produit_id, vente_id, unite_id, prix_produit, quantite_vendue) VALUES(%s,%s,%s,%s,%s,%s) ''',(maraicher_id, produit_id, vente_id, unite_id, prix_produit, quantite_vendue))
+    get_db().commit()
+    return redirect('/annonces/show')
+
+@app.route('/annonce/delete', methods=['GET'])
+def delete_annonce():
+    idMaraicher = request.args.get('maraicher')
+    idVente = request.args.get('vente')
+    idProduit = request.args.get('produit')
+    idUnite = request.args.get('unite')
+    if idMaraicher != None and idMaraicher.isnumeric() and idVente != None and idMaraicher.isnumeric() and idProduit != None and idProduit.isnumeric() and idUnite != None and idUnite.isnumeric():
+        cursor = get_db().cursor()
+        cursor.execute('''
+                       DELETE
+                       FROM annonce
+                       WHERE maraicher_id = %s
+                         AND vente_id = %s
+                         AND produit_id = %s
+                         AND unite_id = %s;
+                       ''', (idMaraicher, idVente, idProduit, idUnite))
+        get_db().commit()
+    return redirect('/annonces/show')
 
 # === ANNONCE === #
 

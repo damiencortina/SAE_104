@@ -1,4 +1,4 @@
-USE BDD_nfaouz;
+USE miambio;
 
 SET FOREIGN_KEY_CHECKS = 0;
 

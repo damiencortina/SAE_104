@@ -7,13 +7,12 @@
 {% endblock header %}
 
 {% block body %}
-<a class="btn btn-primary px-4 mb-4" href="/ski/add" role="button">Créer une nouvelle annonce</a>
+<a class="btn btn-primary px-4 mb-4" href="/annonce/add" role="button">Créer une nouvelle annonce</a>
 <table class="table table-sm align-middle">
     <thead>
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">Produit</th>
-            <th class="text-center" scope="col">Maraîcher</th>
+            <th scope="col">Maraîcher</th>
+            <th class="text-center">Produit</th>
             <th class="text-center" scope="col">Date de vente</th>
             <th class="text-center" scope="col">Quantitée vendue</th>
             <th class="text-center" scope="col">Prix</th>
@@ -23,15 +22,14 @@
     <tbody>
         {% for annonce in annonces %}
         <tr>
-            <th scope="row">{{annonce.id}}</th>
-            <td>{{annonce.nom_produit}}</td>
-            <td class="text-center">{{annonce.maraicher_id}}</td>
+            <td>{{annonce.maraicher_id}}</td>
+            <td class="text-center">{{annonce.nom_produit}}</td>
             <td class="text-center">{{annonce.vente_id}}</td>
             <td class="text-center">{%if annonce.quantite_vendue is not none%}{{annonce.quantite_vendue}}{% else %}-{% endif %}</td>
             <td class="text-center">{{annonce.prix_produit}}€</td>
             <td class="text-end">
-                <a class="btn btn-outline-primary" href="/annonce/edit?id={{annonce.id}}" role="button">Modifier</a>
-                <a class="btn btn-outline-danger" href="/annonce/delete?id={{annonce.id}}" role="button">Supprimer</a>
+                <a class="btn btn-outline-primary" href="/annonce/edit?maraicher={{annonce.maraicher_id}}&vente={{annonce.vente_id}}&produit={{annonce.produit_id}}&unite={{annonce.unite_id}}" role="button">Modifier</a>
+                <a class="btn btn-outline-danger" href="/annonce/delete?maraicher={{annonce.maraicher_id}}&vente={{annonce.vente_id}}&produit={{annonce.produit_id}}&unite={{annonce.unite_id}}" role="button">Supprimer</a>
             </td>
         </tr>
         {% endfor %}
