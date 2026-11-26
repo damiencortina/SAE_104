@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>gestion des ventes</title>
+{% endblock %}
+
+{% block body %}
+<h1>Listes des ventes</h1>
+<a href="/vente/add" >Ajouter une Ventes</a>
+
+{% if ventes | length >= 1 %}
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>id</th><th>Date de vente</th><th>Heure de début</th><th>Heure de fin</th><th>Id point de vente</th><th>Actions</th>
+        </tr>
+        </thead>
+        {% for vente in ventes %}
+            <tr>
+                {# commentaires : autre notation possible, on affiche un element du dictionnaire
+                <td>{{ vente['id'] }}</td><td>{{ vente['nom'] }}</td><td>{{ vente['groupe'] }}</td>
+        #}
+                 <td>{{ vente.id }}</td><td>{{ vente.date_vente }}</td><td>{{ vente.heure_debut }}</td><td>{{ vente.heure_fin }}</td><td>{{ vente.ptVente_id }} - {{ vente.nom_point_de_vente  }}</td>
+            <td>
+                    <a href="/vente/edit?id={{ vente.id }}"   class="btn btn-success">editer</a>&nbsp;
+                    <a href="/vente/delete?id={{ vente.id }}"   class="btn btn-danger">supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <h2> la liste des ventes est vide</h2>
+{% endif %}
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.js') }}"></script>
+{% endblock %}
