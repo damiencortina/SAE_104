@@ -8,18 +8,63 @@
 
 {% block body %}
     <form action="/annonce/edit" method="post">
-        <input type="hidden" name="maraicher_id" value="{{ annonce.maraicher_id }}">
-        <input type="hidden" name="produit_id" value="{{ annonce.produit_id }}">
-        <input type="hidden" name="unite_id" value="{{ annonce.unite_id }}">
-        <input type="hidden" name="vente_id" value="{{ annonce.vente_id }}">
+        <input type="hidden" name="id_annonce" value="{{ annonce.id_annonce }}">
         <div class="mb-3">
-            <label for="quantiteVendue" class="form-label">Prix d'achat(€)</label>
+            <label for="maraicher_id" class="form-label">Maraîcher</label>
+            <select class="form-select" id="maraicher_id" name="maraicher_id">
+                {% for maraicher in maraichers %}
+                    {% if maraicher.id_maraicher == annonce.maraicher_id %}
+                        <option value="{{ maraicher.id_maraicher }}" selected>{{ maraicher.raison_sociale }}</option>
+                    {% else %}
+                        <option value="{{ maraicher.id_maraicher }}">{{ maraicher.raison_sociale }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="produit_id" class="form-label">Produit</label>
+            <select class="form-select" id="produit_id" name="produit_id">
+                {% for produit in produits %}
+                    {% if produit.id_produit == annonce.produit_id %}
+                        <option value="{{ produit.id_produit }}" selected>{{ produit.nom_produit }}</option>
+                    {% else %}
+                        <option value="{{ produit.id_produit }}">{{ produit.nom_produit }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="vente_id" class="form-label">Marché</label>
+            <select class="form-select" id="vente_id" name="vente_id">
+                {% for vente in ventes %}
+                    {% if vente.id_vente == annonce.vente_id %}
+                        <option value="{{ vente.id_vente }}" selected>{{ vente.nom_point_de_vente }} du {{ vente.date_vente }}</option>
+                    {% else %}
+                        <option value="{{ vente.id_vente }}">{{ vente.nom_point_de_vente }} du {{ vente.date_vente }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="unite_id" class="form-label">Unité</label>
+            <select class="form-select" id="unite_id" name="unite_id">
+                {% for unite in unites %}
+                    {% if unite.id == annonce.unite_id %}
+                        <option value="{{ unite.id_unite }}" selected>{{ unite.nom_unite }}</option>
+                    {% else %}
+                        <option value="{{ unite.id_unite }}">{{ unite.nom_unite }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="quantiteVendue" class="form-label">Quantité vendue</label>
             <input type="number" class="form-control" id="quantiteVendue" name="quantite_vendue"
                    placeholder="Saisir une quantité vendue" value="{{ annonce.quantite_vendue }}">
         </div>
         <div class="mb-3">
-            <label for="prixProduit" class="form-label">Prix location(€)</label>
-            <input type="number" class="form-control" id="prixProduit" name="prix_produit"
+            <label for="prixProduit" class="form-label">Prix du produit(€)</label>
+            <input required type="number" class="form-control" id="prixProduit" name="prix_produit"
                    placeholder="Saisir le prix auquel vous souhaitez annoncer le produit"
                    value="{{ annonce.prix_produit }}">
         </div>

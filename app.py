@@ -100,15 +100,26 @@ def edit_annonce():
 
 @app.route('/annonce/edit', methods=['POST'])
 def valid_edit_annonce():
-    maraicher_id = request.form.get('maraicher_id')
-    produit_id = request.form.get('produit_id'),
-    vente_id = request.form.get('vente_id'),
-    unite_id = request.form.get('unite_id')
-    prix_produit = request.form.get('prix_produit')
-    quantite_vendue = request.form.get('quantite_vendue')
+    id_annonce = request.form.get('id_annonce', type=int)
+    maraicher_id = request.form.get('maraicher_id', type=int)
+    produit_id = request.form.get('produit_id', type=int),
+    vente_id = request.form.get('vente_id', type=int),
+    unite_id = request.form.get('unite_id', type=int)
+    prix_produit = request.form.get('prix_produit', type=int)
+    quantite_vendue = request.form.get('quantite_vendue', type=int)
     cursor = get_db().cursor()
-    cursor.execute('''UPDATE annonce SET prix_produit = %s, quantite_vendue = %s WHERE maraicher_id=%s AND produit_id = %s AND vente_id = %s AND unite_id = %s ''',(prix_produit, quantite_vendue, maraicher_id, produit_id, vente_id, unite_id))
-    get_db().commit()
+    cursor.execute(''' SELECT *
+                       FROM annonce
+                       WHERE maraicher_id = %s
+                         AND vente_id = %s
+                         AND produit_id = %s
+                         AND unite_id = %s; ''',(maraicher_id, vente_id, produit_id, unite_id))
+    annonce = cursor.fetchone()
+    if(annonce != None and (annonce['id_annonce'] != id_annonce)):
+        flash("Une annonce similaire existe déjà", 'error')
+    else:
+        cursor.execute('''UPDATE annonce SET prix_produit = %s, quantite_vendue = %s, maraicher_id=%s, produit_id = %s, vente_id = %s, unite_id = %s WHERE id_annonce = %s''',(prix_produit, quantite_vendue, maraicher_id, produit_id, vente_id, unite_id, id_annonce))
+        get_db().commit()
     return redirect('/annonces/show')
 
 @app.route('/annonce/add', methods=['GET'])
@@ -142,15 +153,25 @@ def add_annonce():
 
 @app.route('/annonce/add', methods=['POST'])
 def valid_add_annonce():
-    maraicher_id = request.form.get('maraicher_id')
-    produit_id = request.form.get('produit_id'),
-    vente_id = request.form.get('vente_id'),
-    unite_id = request.form.get('unite_id')
-    prix_produit = request.form.get('prix_produit')
-    quantite_vendue = request.form.get('quantite_vendue')
+    maraicher_id = request.form.get('maraicher_id', type=int)
+    produit_id = request.form.get('produit_id', type=int),
+    vente_id = request.form.get('vente_id', type=int),
+    unite_id = request.form.get('unite_id', type=int)
+    prix_produit = request.form.get('prix_produit', type=int)
+    quantite_vendue = request.form.get('quantite_vendue', type=int)
     cursor = get_db().cursor()
-    cursor.execute('''INSERT INTO annonce(maraicher_id, produit_id, vente_id, unite_id, prix_produit, quantite_vendue) VALUES(%s,%s,%s,%s,%s,%s) ''',(maraicher_id, produit_id, vente_id, unite_id, prix_produit, quantite_vendue))
-    get_db().commit()
+    cursor.execute(''' SELECT *
+                       FROM annonce
+                       WHERE maraicher_id = %s
+                         AND vente_id = %s
+                         AND produit_id = %s
+                         AND unite_id = %s; ''', (maraicher_id, vente_id, produit_id, unite_id))
+    annonce = cursor.fetchone()
+    if (annonce != None):
+        flash("Une annonce similaire existe déjà", 'error')
+    else:
+        cursor.execute('''INSERT INTO annonce(maraicher_id, produit_id, vente_id, unite_id, prix_produit, quantite_vendue) VALUES(%s,%s,%s,%s,%s,%s) ''',(maraicher_id, produit_id, vente_id, unite_id, prix_produit, quantite_vendue))
+        get_db().commit()
     return redirect('/annonces/show')
 
 @app.route('/annonce/delete', methods=['GET'])

@@ -15,13 +15,13 @@
         </div>
         <div class="mb-3">
             <label for="prixProduit" class="form-label">Prix annoncé(€)</label>
-            <input type="number" class="form-control" id="prixProduit" name="prix_produit"
+            <input required type="number" class="form-control" id="prixProduit" name="prix_produit"
                    placeholder="Saisir le prix auquel vous souhaitez annoncer le produit">
         </div>
         <div class="mb-3">
             <label for="maraicher_id" class="form-label">Maraîcher</label>
             <select required class="form-select" id="maraicher_id" name="maraicher_id">
-                <option selected>Sélectionnez un maraîcher</option>
+                <option selected value="">Sélectionnez un maraîcher</option>
                 {% for maraicher in maraichers %}
                     <option value="{{ maraicher.id_maraicher }}">{{ maraicher.raison_sociale }}</option>
                 {% endfor %}
@@ -30,7 +30,7 @@
         <div class="mb-3">
             <label for="produit_id" class="form-label">Produit</label>
             <select required class="form-select" id="produit_id" name="produit_id">
-                <option selected>Sélectionnez un produit</option>
+                <option selected value="">Sélectionnez un produit</option>
                 {% for produit in produits %}
                     <option value="{{ produit.id_produit }}">{{ produit.nom_produit }}</option>
                 {% endfor %}
@@ -39,16 +39,17 @@
         <div class="mb-3">
             <label for="vente_id" class="form-label">Marché</label>
             <select required class="form-select" id="vente_id" name="vente_id">
-                <option selected>Sélectionnez une vente</option>
+                <option selected value="">Sélectionnez une vente</option>
                 {% for vente in ventes %}
-                    <option value="{{ vente.id_vente }}">{{ vente.nom_point_de_vente }} du {{ vente.date_vente }}</option>
+                    <option value="{{ vente.id_vente }}">{{ vente.nom_point_de_vente }}
+                        du {{ vente.date_vente }}</option>
                 {% endfor %}
             </select>
         </div>
         <div class="mb-3">
             <label for="unite_id" class="form-label">Unité</label>
             <select required class="form-select" id="unite_id" name="unite_id">
-                <option selected>Sélectionnez une unité</option>
+                <option selected value="">Sélectionnez une unité</option>
                 {% for unite in unites %}
                     <option value="{{ unite.id_unite }}">{{ unite.nom_unite }}</option>
                 {% endfor %}
