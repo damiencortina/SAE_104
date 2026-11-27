@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAÉ 104 - Gestion Maraîchère</title>
+    <link rel="stylesheet" href="/static/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/static/messtyles.css">
+</head>
+
+<body>
+{% include '_nav.html' %}
+
+<header>
+    <div class="px-4 py-4 text-center bg-light border-bottom">
+        <h1 class="display-6 fw-bold">SAÉ 1.04 — Gestion des Maraîchers</h1>
+        <p class="mt-2 mb-0">
+            <strong>Groupe SAÉ : 6 </strong> <br>
+            <strong>Étudiants :</strong> Noah Faouz, Damien Cortina, Arthur Dessaux, Tom Creusot--Duc
+        </p>
+    </div>
+</header>
+
+<main class="my-5">
+    <div class="container">
+        <h3 class="mb-4 text-center">Menu général de l'application</h3>
+        <div class="d-grid gap-3 mx-auto w-50">
+            <a href="/produit/show" class="btn btn-outline-primary btn-lg">
+                Gestion des Produits (Noah Faouz)
+            </a>
+            <a href="/produit/etat" class="btn btn-outline-success btn-lg">
+                État statistique des Produits (Noah Faouz)
+            </a>
+        </div>
+    </div>
+</main>
+
+<footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary">
+        SAÉ 1.04 — BUT1 Informatique
+    </p>
+</footer>
+</body>
+
+</html>

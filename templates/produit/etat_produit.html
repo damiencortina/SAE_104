@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>État des produits</title>
-    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/bootstrap/bootstrap.css">
 </head>
 <body class="bg-light">
+{% include '_nav.html' %}
+
 <div class="container py-4">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -17,24 +19,23 @@
         </div>
     </div>
 
-    <!-- Formulaire unique de paramétrage (en GET pour conserver les deux filtres ensemble) -->
     <form action="/produit/etat" method="get" class="card p-3 mb-4">
         <div class="row g-3 align-items-end">
             <div class="col-md-5">
-                <label for="saison" class="form-label">Filtrer par saison</label>
+                <label for="saison" class="form-label">Choix de la saison</label>
                 <select class="form-select" id="saison" name="saison">
                     <option value="">-- Toutes les saisons --</option>
-                    <option value="printemps" {% if saison_choisie == 'printemps' %}selected{% endif %}>Printemps</option>
-                    <option value="été" {% if saison_choisie == 'été' %}selected{% endif %}>Été</option>
-                    <option value="automne" {% if saison_choisie == 'automne' %}selected{% endif %}>Automne</option>
-                    <option value="hiver" {% if saison_choisie == 'hiver' %}selected{% endif %}>Hiver</option>
+                    <option value="Printemps" {% if saison_choisie == 'Printemps' %}selected{% endif %}>Printemps</option>
+                    <option value="Été" {% if saison_choisie == 'Été' %}selected{% endif %}>Été</option>
+                    <option value="Automne" {% if saison_choisie == 'Automne' %}selected{% endif %}>Automne</option>
+                    <option value="Hiver" {% if saison_choisie == 'Hiver' %}selected{% endif %}>Hiver</option>
                 </select>
             </div>
 
             <div class="col-md-5">
-                <label for="type_id" class="form-label">Filtrer par type de produit</label>
+                <label for="type_id" class="form-label">Choix du type </label>
                 <select class="form-select" id="type_id" name="type_id">
-                    <option value="">-- Tous les types de produit --</option>
+                    <option value="">-- Tous les types --</option>
                     {% for t in types_produit %}
                         <option value="{{ t.id }}" {% if type_id_choisi == t.id|string %}selected{% endif %}>
                             {{ t.libelle }} ({{ t.id }})
@@ -43,14 +44,14 @@
                 </select>
             </div>
 
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary w-100">Filtrer</button>
+            <div class="col-md-2 d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Filtrer</button>
+                <a href="/produit/etat" class="btn btn-outline-secondary btn-sm">Réinitialiser</a>
             </div>
         </div>
     </form>
 
-    <!-- Tableau 1 : Nombre de produits par saison -->
-    <h3 class="mt-4">1. Nombre de produits par saison</h3>
+    <h3 class="mt-4">1. Nombre de produits </h3>
     {% if stats_saisons | length >= 1 %}
         <table class="table table-bordered table-striped bg-white">
             <thead class="table-dark">
@@ -69,40 +70,35 @@
             </tbody>
         </table>
     {% else %}
-        <div class="alert alert-info">Aucun produit trouvé pour cette saison.</div>
+        <div class="alert alert-info">Aucun résultat statistique pour cette sélection.</div>
     {% endif %}
 
-    <!-- Tableau 2 : Prix moyen par type de produit -->
-    <h3 class="mt-5">2. Prix moyen conseillé par type de produit</h3>
-    {% if stats_prix | length >= 1 %}
+    <h3 class="mt-5">Produits ({{ produits_concernes | length }})</h3>
+    {% if produits_concernes | length >= 1 %}
         <table class="table table-bordered table-striped bg-white">
             <thead class="table-dark">
                 <tr>
-                    <th>ID Type</th>
-                    <th>Type de produit</th>
-                    <th>Nombre de produits</th>
-                    <th>Prix moyen conseillé</th>
+                    <th>ID</th>
+                    <th>Nom du produit</th>
+                    <th>Type (Fruit / Légume)</th>
+                    <th>Saison de pousse</th>
+                    <th>Prix conseillé</th>
                 </tr>
             </thead>
             <tbody>
-                {% for p in stats_prix %}
+                {% for p in produits_concernes %}
                 <tr>
                     <td>{{ p.id }}</td>
-                    <td>{{ p.libelle }}</td>
-                    <td>{{ p.nb_produits }}</td>
-                    <td>
-                        {% if p.prix_moyen is not none %}
-                            <strong>{{ p.prix_moyen }} €</strong>
-                        {% else %}
-                            <em>Aucun produit</em>
-                        {% endif %}
-                    </td>
+                    <td>{{ p.nom }}</td>
+                    <td>{{ p.libelle_type }} ({{ p.type_id }})</td>
+                    <td>{{ p.saison }}</td>
+                    <td>{{ p.prix }} €</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <div class="alert alert-info">Aucune donnée pour ce type de produit.</div>
+        <div class="alert alert-warning">None</div>
     {% endif %}
 
 </div>

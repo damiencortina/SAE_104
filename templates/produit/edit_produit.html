@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modifier un produit</title>
+    <link rel="stylesheet" href="/static/bootstrap/bootstrap.css">
+</head>
+<body class="bg-light">
+{% include '_nav.html' %}
+
+<div class="container py-4">
+    <h2 class="mb-4">Modifier un produit</h2>
+
+    <form action="/produit/edit" method="post">
+        <input type="hidden" name="id" value="{{ produit.id }}">
+
+        <div class="mb-3">
+            <label for="nom" class="form-label">Nom du produit</label>
+            <input type="text" class="form-control" id="nom" name="nom" value="{{ produit.nom }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="type_id" class="form-label">Type de produit</label>
+            <select class="form-select" id="type_id" name="type_id" required>
+                {% for t in types_produit %}
+                    <option value="{{ t.id }}" {% if t.id == produit.type_id %}selected{% endif %}>
+                        {{ t.libelle }} ({{ t.id }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="saison" class="form-label">Saison de pousse</label>
+            <select class="form-select" id="saison" name="saison">
+                <option value="">-- Choisir une saison --</option>
+                <option value="Printemps" {% if produit.saison == 'Printemps' %}selected{% endif %}>Printemps</option>
+                <option value="Été" {% if produit.saison == 'Été' %}selected{% endif %}>Été</option>
+                <option value="Automne" {% if produit.saison == 'Automne' %}selected{% endif %}>Automne</option>
+                <option value="Hiver" {% if produit.saison == 'Hiver' %}selected{% endif %}>Hiver</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="prix" class="form-label">Prix conseillé (€)</label>
+            <input type="number" class="form-control" id="prix" name="prix" value="{{ produit.prix }}">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <a href="/produit/show" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+</body>
+</html>
