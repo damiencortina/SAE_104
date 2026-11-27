@@ -1,10 +1,12 @@
 {% extends 'layout.html' %}
 
-{% block title %}
-    <title>Gestion des Ventes</title>
-{% endblock %}
+{% block header %}
+    <div class="px-4 py-5 text-center">
+        <h1 class="display-5">Modifier des ventes </h1>
+    </div>
+{% endblock header %}
 {% block body %}
-
+<a href="/vente/show" class="btn btn-secondary">Retour à la liste des ventes</a>
 <div class="container py-4">
   <h2 class="mb-4">Modifier la vente</h2>
   <form action="/vente/edit" method="post">
@@ -34,7 +36,7 @@
     <!-- Point de vente -->
     <div class="mb-3">
       <label for="id_pdv" class="form-label">Point de vente</label>
-      <select name="id_pdv" id="id_pdv">
+      <select name="id_pdv" class="form-control" id="id_pdv">
         {% for ptdeVente in ptdeVente %}
             <option value="{{ ptdeVente.id }}"
                 {% if ptdeVente.id is defined and ptdeVente.id == vente.id_pdv %}selected{% endif %}
