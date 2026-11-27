@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Produit</title>
     <link rel="stylesheet" href="/static/bootstrap/bootstrap.css">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=visibility,edit,delete,add"/>
 </head>
 <body>
 {% include '_nav.html' %}
@@ -20,7 +22,7 @@
 
     <h1>Liste des produits proposés</h1>
 
-    <a href="/produit/add" class="btn btn-success">Ajouter un produit</a>
+    <a class="btn btn-primary px-4 mb-4" href="/produit/add" role="button"><span class="material-symbols-outlined">add</span> Créer une nouvelle annonce</a>
 
     {% if produits | length >= 1 %}
         <table class="table table-striped">
@@ -43,9 +45,12 @@
                     <td>{{ p.nom_saison }} ({{ p.saison_id }})</td>
                     <td>{{ p.prix }} €</td>
                     <td>
-                        <a href="/produit/edit?id={{ p.id }}" class="btn btn-warning btn-sm">Éditer</a>
-                        &nbsp;
-                        <a href="/produit/delete?id={{ p.id }}" class="btn btn-danger btn-sm">Supprimer</a>
+                        <a class="btn btn-outline-primary"
+                           href="/produit/edit?id={{ p.id }}"
+                           role="button"><span class="material-symbols-outlined">edit</span></a>
+                        <a class="btn btn-outline-danger"
+                           href="/produit/delete?id={{ p.id }}"
+                           role="button"><span class="material-symbols-outlined">delete</span></a>
                     </td>
                 </tr>
                 {% endfor %}
