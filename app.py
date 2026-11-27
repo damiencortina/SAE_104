@@ -168,6 +168,150 @@ def valid_edit_etudiant():
 
 # === POINT DE VENTE === #
 
+@app.route('/point_de_vente/show')
+def show_point_de_vente():
+    cursor = get_db().cursor()
+    cursor.execute('''
+                   SELECT point_de_vente.*,
+                          ville.nom_ville
+                   FROM point_de_vente
+                            JOIN ville ON ville.id_ville = point_de_vente.ville_id;
+                   ''')
+    points_de_vente = cursor.fetchall()
+    cursor.close()
+    return render_template('point_de_vente/show_point_de_vente.html', points_de_vente=points_de_vente)
+
+
+@app.route('/point_de_vente/add', methods=['GET'])
+def add_point_de_vente():
+    cursor = get_db().cursor()
+    cursor.execute("""
+                   SELECT id_ville, nom_ville
+                   FROM ville
+                   ORDER BY nom_ville;
+                   """)
+    villes = cursor.fetchall()
+    cursor.close()
+    return render_template('point_de_vente/add_point_de_vente.html', villes=villes)
+
+
+@app.route('/point_de_vente/valide_add', methods=['POST'])
+def valide_add_point_de_vente():
+    nom = request.form.get('nom_point_de_vente')
+    adresse = request.form.get('adresse_point_de_vente')
+    code_postal = request.form.get('code_postal_point_de_vente')
+    ville_id = request.form.get('ville_id')
+    tarifs_location = request.form.get('tarifs_location')
+
+    cursor = get_db().cursor()
+    cursor.execute("""
+                   INSERT INTO point_de_vente (nom_point_de_vente, adresse_point_de_vente, code_postal_point_de_vente,
+                                               ville_id, tarifs_location)
+                   VALUES (%s, %s, %s, %s, %s);
+                   """, (nom, adresse, code_postal, ville_id, tarifs_location))
+    get_db().commit()
+    cursor.close()
+    return redirect(url_for('show_point_de_vente'))
+
+
+@app.route('/point_de_vente/edit', methods=['GET'])
+def edit_point_de_vente():
+    id_point = request.args.get('id')
+    cursor = get_db().cursor()
+
+    point_de_vente = None
+    if id_point is not None and id_point.isnumeric():
+        indice = int(id_point)
+        cursor.execute("""
+                       SELECT id_point_de_vente,
+                              nom_point_de_vente,
+                              adresse_point_de_vente,
+                              code_postal_point_de_vente,
+                              ville_id,
+                              tarifs_location
+                       FROM point_de_vente
+                       WHERE id_point_de_vente = %s;
+                       """, (indice,))
+        point_de_vente = cursor.fetchone()
+
+    cursor.execute("SELECT id_ville, nom_ville FROM ville ORDER BY nom_ville;")
+    villes = cursor.fetchall()
+    cursor.close()
+
+    return render_template('point_de_vente/edit_point_de_vente.html',
+                           point_de_vente=point_de_vente,
+                           villes=villes)
+
+
+@app.route('/point_de_vente/valide_edit', methods=['POST'])
+def valide_edit_point_de_vente():
+    id_point = request.args.get('id')
+    nom = request.form.get('nom_point_de_vente')
+    adresse = request.form.get('adresse_point_de_vente')
+    code_postal = request.form.get('code_postal_point_de_vente')
+    ville_id = request.form.get('ville_id')
+    tarifs_location = request.form.get('tarifs_location')
+
+    cursor = get_db().cursor()
+    cursor.execute("""
+                   UPDATE point_de_vente
+                   SET nom_point_de_vente         = %s,
+                       adresse_point_de_vente     = %s,
+                       code_postal_point_de_vente = %s,
+                       ville_id                   = %s,
+                       tarifs_location            = %s
+                   WHERE id_point_de_vente = %s;
+                   """, (nom, adresse, code_postal, ville_id, tarifs_location, id_point))
+    get_db().commit()
+    cursor.close()
+    return redirect(url_for('show_point_de_vente'))
+
+
+@app.route('/point_de_vente/delete')
+def delete_point_de_vente():
+    id_point = request.args.get('id')
+    if id_point is not None and id_point.isnumeric():
+        cursor = get_db().cursor()
+
+        # Nettoyage des tables dépendantes pour éviter l'IntegrityError
+        cursor.execute("""
+                       DELETE
+                       FROM annonce
+                       WHERE vente_id IN (SELECT id_vente FROM vente WHERE point_de_vente_id = %s);
+                       """, (int(id_point),))
+
+        cursor.execute("""
+                       DELETE
+                       FROM vente
+                       WHERE point_de_vente_id = %s;
+                       """, (int(id_point),))
+
+        cursor.execute("""
+                       DELETE
+                       FROM point_de_vente
+                       WHERE id_point_de_vente = %s;
+                       """, (int(id_point),))
+
+        get_db().commit()
+        cursor.close()
+    return redirect(url_for('show_point_de_vente'))
+
+
+@app.route('/point_de_vente/etat')
+def etat_point_de_vente():
+    cursor = get_db().cursor()
+    cursor.execute('''
+        SELECT point_de_vente.id_point_de_vente, 
+               point_de_vente.nom_point_de_vente, 
+               COUNT(vente.id_vente) AS nombre_de_ventes
+        FROM point_de_vente
+        LEFT JOIN vente ON point_de_vente.id_point_de_vente = vente.point_de_vente_id
+        GROUP BY point_de_vente.id_point_de_vente, point_de_vente.nom_point_de_vente;
+    ''')
+    resultats = cursor.fetchall()
+    cursor.close()
+    return render_template('point_de_vente/etat_point_de_vente.html', resultats=resultats)
+
 
 if __name__ == '__main__':
     app.run()
