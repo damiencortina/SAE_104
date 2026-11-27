@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+ <title>point de vente</title>
+{% endblock %}
+
+{% block body %}
+<h1>Listes des point de vente</h1>
+<a href="/point_de_vente/add" class="btn btn-primary mb-3">Ajouter un point de vente</a>
+
+{% if points_de_vente | length >= 1 %}
+
+<table class="table">
+ <thead class="thead-dark">
+ <tr>
+ <th>id</th>
+ <th>nom</th>
+ <th>adresse</th>
+ <th>code postal</th>
+ <th>ville</th>
+ <th>tarifs location</th>
+ <th>Actions</th>
+ </tr>
+ </thead>
+
+ {% for point_de_vente in points_de_vente %}
+ <tr>
+ <td>{{ point_de_vente.id_point_de_vente }}</td>
+ <td>{{ point_de_vente.nom_point_de_vente }}</td>
+ <td>{{ point_de_vente.adresse_point_de_vente }}</td>
+ <td>{{ point_de_vente.code_postal_point_de_vente }}</td>
+ <td>{{ point_de_vente.nom_ville }}</td>
+ <td>{{ point_de_vente.tarifs_location }}</td>
+
+ <td>
+ <a href="/point_de_vente/etat" class="btn btn-info">Ventes</a>&nbsp;
+ <a href="/point_de_vente/edit?id={{ point_de_vente.id_point_de_vente }}" class="btn btn-success">editer</a>&nbsp;
+ <a href="/point_de_vente/delete?id={{ point_de_vente.id_point_de_vente }}"
+    class="btn btn-danger"
+    onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce point de vente ?');">supprimer</a>
+ </td>
+ </tr>
+ {% endfor %}
+</table>
+
+{% else %}
+ <h2> la liste des points de vente est vide</h2>
+{% endif %}
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.js') }}"></script>
+{% endblock %}
