@@ -1,14 +1,17 @@
 {% extends 'layout.html' %}
 
 
-{% block title %}
-<title>Ajouter une vente</title>
-{% endblock %}
+{% block header %}
+    <div class="px-4 py-5 text-center">
+        <h1 class="display-5">Ajouter des ventes </h1>
+    </div>
+{% endblock header %}
 
 
 {% block body %}
+<a href="/vente/show" class="btn btn-secondary">Retour à la liste des ventes</a>
 <div class="container py-4">
-  <h2 class="mb-4">Ajouter une vente</h2>
+  <h2 class="mb-4">Nouvelle vente</h2>
 
     <form action="/vente/add" method="post">
     <!-- Champ caché ID -->
@@ -38,7 +41,7 @@
     <!-- Id_point de vente -->
     <div class="mb-3">
       <label for="ptdeVente" class="form-label">Point de vente</label>
-      <select name="id_pdv" id="ptdeVente" required>
+      <select name="id_pdv" id="ptdeVente"  class="form-control" required>
             <option value="">Sélectionner un Point de vente</option>
          {% for ptdeVente in ptdeVente %}
             <option value="{{ ptdeVente.id }}"> {{ptdeVente.nom_point_de_vente }} </option>
