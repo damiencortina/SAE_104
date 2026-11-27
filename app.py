@@ -50,9 +50,13 @@ def teardown_db(exception):
 def show_annonce():
     cursor = get_db().cursor()
     cursor.execute('''
-                   SELECT a.*, p.nom_produit
+                   SELECT a.*, p.nom_produit, u.nom_unite, m.raison_sociale, CONCAT(pdv.nom_point_de_vente,' du ',v.date_vente) pdv
                    FROM annonce a
-                   JOIN produit p ON p.id_produit = a.produit_id;
+                   JOIN produit p ON p.id_produit = a.produit_id
+                   JOIN vente v ON v.id_vente = a.vente_id
+                       JOIN point_de_vente pdv ON pdv.id_point_de_vente = v.point_de_vente_id
+                   JOIN unite u ON u.id_unite = a.unite_id
+                   JOIN maraicher m ON m.id_maraicher = a.maraicher_id
                    ''')
     annonces = cursor.fetchall()
     cursor.close()
