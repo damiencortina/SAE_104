@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+ <title>État des Points de Vente</title>
+{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+ <h2 class="mb-4">État et nombre de ventes par point de vente</h2>
+
+ {% if resultats | length >= 1 %}
+ <table class="table table-striped">
+ <thead class="thead-dark">
+ <tr>
+ <th>ID Point de Vente</th>
+ <th>Nom du Point de Vente</th>
+ <th>Nombre de Ventes</th>
+ </tr>
+ </thead>
+ <tbody>
+ {% for ligne in resultats %}
+ <tr>
+ <td>{{ ligne.id_point_de_vente }}</td>
+ <td>{{ ligne.nom_point_de_vente }}</td>
+ <td>{{ ligne.nombre_de_ventes }}</td>
+ </tr>
+ {% endfor %}
+ </tbody>
+ </table>
+ {% else %}
+ <h3>Aucune donnée trouvée.</h3>
+ {% endif %}
+
+ <a href="/point_de_vente/show" class="btn btn-secondary mt-3">Retour à la liste</a>
+</div>
+{% endblock %}
