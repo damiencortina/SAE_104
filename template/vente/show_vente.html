@@ -1,16 +1,23 @@
-{% extends 'layout.html' %}
 
-{% block title %}
-    <title>gestion des ventes</title>
-{% endblock %}
+{% extends 'layout.html' %}
+{% block stylesheets %}
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=visibility,edit,delete,add"/>
+{% endblock stylesheets %}
+
+{% block header %}
+    <div class="px-4 py-5 text-center">
+        <h1 class="display-5">Liste des ventes </h1>
+    </div>
+{% endblock header %}
 
 {% block body %}
 <h1>Listes des ventes</h1>
-<a href="/vente/add" >Ajouter une Ventes</a>
+<a href="/vente/add" class="btn btn-primary px-4 mb-4"  > <strong>+</strong> Créer une vente</a>
 
 {% if ventes | length >= 1 %}
-    <table class="table">
-        <thead class="thead-dark">
+    <table class="table table-striped">
+        <thead class="table-primary">
         <tr>
             <th>id</th><th>Date de vente</th><th>Heure de début</th><th>Heure de fin</th><th>Id point de vente</th><th>Actions</th>
         </tr>
@@ -22,8 +29,9 @@
         #}
                  <td>{{ vente.id }}</td><td>{{ vente.date_vente }}</td><td>{{ vente.heure_debut }}</td><td>{{ vente.heure_fin }}</td><td>{{ vente.ptVente_id }} - {{ vente.nom_point_de_vente  }}</td>
             <td>
-                    <a href="/vente/edit?id={{ vente.id }}"   class="btn btn-success">editer</a>&nbsp;
-                    <a href="/vente/delete?id={{ vente.id }}"   class="btn btn-danger">supprimer</a>
+                <a href="/vente/details?id={{ vente.id }}" class="btn btn-outline-info"><span class="material-symbols-outlined">visibility</span></a>&nbsp;
+                <a href="/vente/edit?id={{ vente.id }}"   class="btn btn-outline-success"><span class="material-symbols-outlined">edit</span></a>&nbsp;
+                <a href="/vente/delete?id={{ vente.id }}"   class="btn btn-outline-danger"><span class="material-symbols-outlined">delete</span></a>
                 </td>
             </tr>
         {% endfor %}
