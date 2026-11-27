@@ -22,20 +22,21 @@
     <form action="/produit/etat" method="get" class="card p-3 mb-4">
         <div class="row g-3 align-items-end">
             <div class="col-md-5">
-                <label for="saison" class="form-label">Choix de la saison</label>
-                <select class="form-select" id="saison" name="saison">
+                <label for="saison_id" class="form-label">Choix de la saison</label>
+                <select class="form-select" id="saison_id" name="saison_id">
                     <option value="">-- Toutes les saisons --</option>
-                    <option value="Printemps" {% if saison_choisie == 'Printemps' %}selected{% endif %}>Printemps</option>
-                    <option value="Été" {% if saison_choisie == 'Été' %}selected{% endif %}>Été</option>
-                    <option value="Automne" {% if saison_choisie == 'Automne' %}selected{% endif %}>Automne</option>
-                    <option value="Hiver" {% if saison_choisie == 'Hiver' %}selected{% endif %}>Hiver</option>
+                    {% for s in saisons %}
+                        <option value="{{ s.id }}" {% if saison_id_choisie == s.id|string %}selected{% endif %}>
+                            {{ s.libelle }} ({{ s.id }})
+                        </option>
+                    {% endfor %}
                 </select>
             </div>
 
             <div class="col-md-5">
-                <label for="type_id" class="form-label">Choix du type </label>
+                <label for="type_id" class="form-label">Choix du type (Fruit / Légume)</label>
                 <select class="form-select" id="type_id" name="type_id">
-                    <option value="">-- Tous les types --</option>
+                    <option value="">-- Tous les types (Fruits et Légumes) --</option>
                     {% for t in types_produit %}
                         <option value="{{ t.id }}" {% if type_id_choisi == t.id|string %}selected{% endif %}>
                             {{ t.libelle }} ({{ t.id }})
@@ -51,11 +52,12 @@
         </div>
     </form>
 
-    <h3 class="mt-4">1. Nombre de produits </h3>
+    <h3 class="mt-4">1. Nombre de produits par saison</h3>
     {% if stats_saisons | length >= 1 %}
         <table class="table table-bordered table-striped bg-white">
             <thead class="table-dark">
                 <tr>
+                    <th>ID Saison</th>
                     <th>Saison de pousse</th>
                     <th>Nombre de produits</th>
                 </tr>
@@ -63,7 +65,8 @@
             <tbody>
                 {% for s in stats_saisons %}
                 <tr>
-                    <td>{{ s.saison }}</td>
+                    <td>{{ s.saison_id }}</td>
+                    <td>{{ s.nom_saison }}</td>
                     <td><strong>{{ s.nb_produits }}</strong></td>
                 </tr>
                 {% endfor %}
@@ -73,7 +76,7 @@
         <div class="alert alert-info">Aucun résultat statistique pour cette sélection.</div>
     {% endif %}
 
-    <h3 class="mt-5">Produits ({{ produits_concernes | length }})</h3>
+    <h3 class="mt-5">2. Produits concernés par la sélection ({{ produits_concernes | length }})</h3>
     {% if produits_concernes | length >= 1 %}
         <table class="table table-bordered table-striped bg-white">
             <thead class="table-dark">
@@ -91,14 +94,14 @@
                     <td>{{ p.id }}</td>
                     <td>{{ p.nom }}</td>
                     <td>{{ p.libelle_type }} ({{ p.type_id }})</td>
-                    <td>{{ p.saison }}</td>
+                    <td>{{ p.nom_saison }} ({{ p.saison_id }})</td>
                     <td>{{ p.prix }} €</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <div class="alert alert-warning">None</div>
+        <div class="alert alert-warning">Aucun produit ne correspond à cette combinaison de filtres.</div>
     {% endif %}
 
 </div>

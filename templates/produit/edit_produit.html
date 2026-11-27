@@ -32,13 +32,13 @@
         </div>
 
         <div class="mb-3">
-            <label for="saison" class="form-label">Saison de pousse</label>
-            <select class="form-select" id="saison" name="saison">
-                <option value="">-- Choisir une saison --</option>
-                <option value="Printemps" {% if produit.saison == 'Printemps' %}selected{% endif %}>Printemps</option>
-                <option value="Été" {% if produit.saison == 'Été' %}selected{% endif %}>Été</option>
-                <option value="Automne" {% if produit.saison == 'Automne' %}selected{% endif %}>Automne</option>
-                <option value="Hiver" {% if produit.saison == 'Hiver' %}selected{% endif %}>Hiver</option>
+            <label for="saison_id" class="form-label">Saison de pousse</label>
+            <select class="form-select" id="saison_id" name="saison_id" required>
+                {% for s in saisons %}
+                    <option value="{{ s.id }}" {% if s.id == produit.saison_id %}selected{% endif %}>
+                        {{ s.libelle }} ({{ s.id }})
+                    </option>
+                {% endfor %}
             </select>
         </div>
 

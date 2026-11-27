@@ -16,7 +16,7 @@
 
         <div class="mb-3">
             <label for="nom" class="form-label">Nom du produit</label>
-            <input type="text" class="form-control" id="nom" name="nom"  required>
+            <input type="text" class="form-control" id="nom" name="nom" required>
         </div>
 
         <div class="mb-3">
@@ -30,13 +30,12 @@
         </div>
 
         <div class="mb-3">
-            <label for="saison" class="form-label">Saison de pousse</label>
-            <select class="form-select" id="saison" name="saison">
+            <label for="saison_id" class="form-label">Saison de pousse</label>
+            <select class="form-select" id="saison_id" name="saison_id" required>
                 <option value="">-- Choisir une saison --</option>
-                <option value="Printemps">Printemps</option>
-                <option value="Été">Été</option>
-                <option value="Automne">Automne</option>
-                <option value="Hiver">Hiver</option>
+                {% for s in saisons %}
+                    <option value="{{ s.id }}">{{ s.libelle }} ({{ s.id }})</option>
+                {% endfor %}
             </select>
         </div>
 

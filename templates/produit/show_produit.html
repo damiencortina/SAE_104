@@ -20,7 +20,7 @@
 
     <h1>Liste des produits proposés</h1>
 
-    <a href="/produit/add" class="btn btn-success ">Ajouter un produit</a>
+    <a href="/produit/add" class="btn btn-success">Ajouter un produit</a>
 
     {% if produits | length >= 1 %}
         <table class="table table-striped">
@@ -29,7 +29,7 @@
                     <th>ID</th>
                     <th>Nom</th>
                     <th>Type de produit (ID)</th>
-                    <th>Saison de pousse</th>
+                    <th>Saison de pousse (ID)</th>
                     <th>Prix conseillé</th>
                     <th>Opérations</th>
                 </tr>
@@ -40,7 +40,7 @@
                     <td>{{ p.id }}</td>
                     <td>{{ p.nom }}</td>
                     <td>{{ p.libelle_type }} ({{ p.type_id }})</td>
-                    <td>{{ p.saison }}</td>
+                    <td>{{ p.nom_saison }} ({{ p.saison_id }})</td>
                     <td>{{ p.prix }} €</td>
                     <td>
                         <a href="/produit/edit?id={{ p.id }}" class="btn btn-warning btn-sm">Éditer</a>
