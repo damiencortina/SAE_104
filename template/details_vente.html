@@ -1,0 +1,124 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+    <div class="px-4 py-5 text-center">
+        <h1 class="display-5">Détails des ventes </h1>
+    </div>
+{% endblock header %}
+
+
+
+{% block body %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Détails du créneau de vente n°{{ vente.id }}</h2>
+        <a href="/vente/show" class="btn btn-secondary">Retour à la liste des ventes</a>
+    </div>
+
+    <h5 class="card-title">{{ vente.nom_point_de_vente }} ({{ vente.nom_ville }})</h5>
+    <p class="card-text mb-0">
+        <strong>Date :</strong> {{ vente.date_vente }} |
+        <strong>Horaires :</strong> {{ vente.heure_debut }} - {{ vente.heure_fin }} |
+        <strong>Adresse :</strong> {{ vente.adresse_point_de_vente }}
+    </p>
+
+
+
+    <!--Les Maraîchers présents -->
+    <h3 class="mt-4">Il y a {{ maraichers | length }} maraîchers présents :</h3>
+    {% if maraichers | length >= 1 %}
+        <table class="table table-striped">
+            <thead class="table-primary">
+                <tr>
+                    <th>Raison sociale</th>
+                    <th>Nom & Prénom</th>
+                    <th>Téléphone</th>
+                    <th>N° Bio</th>
+                    <th>Nb produits</th>
+                    <th>Prix moyen</th>
+                    <th>Quantité totale vendue</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in maraichers %}
+                <tr>
+                    <td>{{ m.raison_sociale }}</td>
+                    <td>{{ m.nom }} {{ m.prenom }}</td>
+                    <td>{{ m.telephone }}</td>
+                    <td>{{ m.numero_bio }}</td>
+                    <td>{{ m.nb_produits }}</td>
+                    <td>{{ m.prix_moyen }} €</td>
+                    <td>{{ m.total_vendu }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning">Aucun maraîcher n'est inscrit sur ce créneau de vente.</div>
+    {% endif %}
+
+    <!-- Les produits proposés -->
+    <h3 class="mt-5">Il y a {{ produits | length }} produits proposés :</h3>
+    {% if produits | length >= 1 %}
+        <table class="table table-striped">
+            <thead class="table-primary">
+                <tr>
+                    <th>Produit</th>
+                    <th>Catégorie</th>
+                    <th>Nb maraîchers</th>
+                    <th>Prix moyen (Min / Max)</th>
+                    <th>Quantité totale vendue</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in produits %}
+                <tr>
+                    <td>{{ p.nom_produit }}</td>
+                    <td>{{ p.nom_type_produit }}</td>
+                    <td>{{ p.nb_maraichers }}</td>
+                    <td>{{ p.prix_moyen }} € (min : {{ p.prix_min }} € / max : {{ p.prix_max }} €)</td>
+                    <td>{{ p.quantite_totale }} {{ p.nom_unite }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    <h3 class="mt-5">Bilan statistiques :</h3>
+        <table class="table table-striped">
+            <thead class="table-primary">
+                <tr>
+                    <th>Libelle de la statistique</th>
+                    <th>Valeur</th>
+                    <th>Contexte</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Volume total de vente sur ce créneau :</td>
+                    <td>{{ bilan.nb_produits_vendus }} unités</td>
+                    <td>{{ bilan.nb_varietes_produits }} produit(s) différent(s)</td>
+
+                </tr>
+
+                <tr>
+                    <td>Chiffre d'affaires :</td>
+                    <td>{{ bilan.chiffre_affaires }} €</td>
+                    <td>Location emplacement : {{ bilan.tarifs_location }} €</td>
+
+                </tr>
+                <tr>
+                    <td>Bénéfice net :</td>
+                    <td>{{ bilan.benefice }} €</td>
+                    <td>CA - Location</td>
+
+                </tr>
+
+            </tbody>
+        </table>
+
+    {% else %}
+        <div class="alert alert-warning">Aucun produit n'est proposé sur ce créneau de vente.</div>
+
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+    <div class="px-4 py-5 text-center">
+        <h1 class="display-5">Etat des ventes  </h1>
+    </div>
+{% endblock header %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2>État des créneaux de vente par point de vente</h2>
+
+    <form method="get" action="/vente/etat" class="row g-3 align-items-end my-3">
+        <div class="col-md-6">
+            <label for="id_pdv" class="form-label">Choisir un point de vente :</label>
+            <select name="id_pdv" id="id_pdv" class="form-select" required>
+                <option value="">-- Sélectionner un point de vente --</option>
+                {% for pdv in ptdeVente %}
+                    <option value="{{ pdv.id }}" {% if id_pdv and pdv.id|string == id_pdv %}selected{% endif %}>
+                        {{ pdv.nom_point_de_vente }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">Valider</button>
+        </div>
+    </form>
+
+    {% if bilan %}
+        <div class="alert alert-info">
+            <strong>{{ bilan.nom_point_de_vente }}</strong> : <strong>{{ bilan.nb_ventes }}</strong> créneau(x) de vente.
+        </div>
+
+        {% if ventes %}
+            <table class="table table-striped">
+                <thead class="table-primary">
+                    <tr>
+                        <th>ID Vente</th>
+                        <th>Date</th>
+                        <th>Heure de début</th>
+                        <th>Heure de fin</th>
+                        <th>Point de vente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for v in ventes %}
+                        <tr>
+                            <td>{{ v.id }}</td>
+                            <td>{{ v.date_vente }}</td>
+                            <td>{{ v.heure_debut }}</td>
+                            <td>{{ v.heure_fin }}</td>
+                            <td>{{ v.nom_point_de_vente }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-muted">Aucun créneau de vente enregistré pour ce point de vente.</p>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
