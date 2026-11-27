@@ -1,37 +1,57 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {% block title %}
-        <title>layout</title>
-    {% endblock %}
-    <link rel="shortcut icon" href="{{ url_for('static', filename='iconeweb.ico') }}" >
-    {% block stylesheets %}
-        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" >
-        <link rel="stylesheet" href="{{ url_for('static', filename='mes_styles.css') }}" >
-    {% endblock %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiamBio</title>
+    <link rel="icon" href="{{ url_for('static', filename='Logo_MiamBio.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    {% block stylesheets %}{% endblock stylesheets %}
 </head>
-<body>
+
+<body class="bg-light">
 {% include('_nav.html') %}
-<div class="container">
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
+<header class="bg-light">
+    {% block header %}
+    <div class="px-4 py-5 text-center">
+        <h1 class="display-5 fw-bold">MiamBio</h1>
+        <h2 class="display-6">Sujet 25</h2>
+        <p class="text-center mt-4">
+            Par Damien Cortina<br>
+            BUT1 | Groupe A2
+        </p>
+    </div>
+    {% endblock header %}
+</header>
+<main class="mb-5 bg-light">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
     {% for categorie, message in messages %}
-    <div role="alert" class="alert {{ categorie }}">
-           Information : <strong>{{ message }}</strong>
+    <div class="alert alert-{{ categorie }}" role="alert">
+        Information : <strong>{{ message }}</strong>
     </div>
     {% endfor %}
-{% endif %}
-{% endwith %}
-{% block body %}
-    <h2 style="color:blue">layout.html</h2>
-{% endblock %}
-</div>
-{% block javascripts %}
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.js') }}"></script>
-{% endblock %}
-
+    {% endif %}
+    {% endwith %}
+    <div class="container shadow p-5 bg-white rounded">
+        {% block body %}
+        <div class="d-grid gap-3 mx-auto py-5 w-50">
+            <a href="/vente/show" class="btn btn-outline-primary btn-lg">vente</a>
+            <a href="/type-ski/show" class="btn btn-outline-primary btn-lg">Types de Ski</a>
+            <a href="/ski/filtre" class="btn btn-outline-primary btn-lg">Affichage des Skis (Filtre)</a>
+        </div>
+        {% endblock body %}
+    </div>
+</main>
+<footer class="py-3 my-4 border-top">
+    <p class="text-center text-body-secondary "><strong>MiamBio</strong></p>
+    <p class="text-center text-body-secondary ">
+        BUT1 | Groupe A2 | Groupe 6
+    </p>
+</footer>
+<script type="module" src="{{ url_for('static', filename='bootstrap/bootstrap.js') }}"></script>
 </body>
 
 </html>
